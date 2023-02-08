@@ -70,7 +70,7 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.grey.shade50,
+        color: Colors.grey.shade100,
         elevation: 2,
         child: Padding(
           padding: const EdgeInsets.symmetric(
