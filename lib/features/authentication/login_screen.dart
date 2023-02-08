@@ -17,7 +17,7 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: Sizes.size40,
+            horizontal: Sizes.size36,
           ),
           child: Column(
             children: const [
@@ -53,7 +53,7 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.grey.shade50,
+        color: Colors.grey.shade100,
         elevation: 2,
         child: Padding(
           padding: const EdgeInsets.symmetric(
