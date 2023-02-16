@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:marquee/marquee.dart';
+import 'package:readmore/readmore.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -27,6 +30,13 @@ class _VideoPostState extends State<VideoPost>
 
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
+  final List<String> hashtags = [
+    "#googleearth",
+    "#googlemaps",
+    "#maps",
+    "#earth",
+  ];
+
   late final AnimationController _animationController;
 
   void _onVideoChange() {
@@ -41,6 +51,7 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     setState(() {});
+    await _videoPlayerController.setLooping(true);
     _videoPlayerController.addListener(_onVideoChange);
   }
 
@@ -125,6 +136,81 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "@니꼬",
+                  style: TextStyle(
+                    fontSize: Sizes.size20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v10,
+                const Text(
+                  "This is my house in Thailand!!!",
+                  style: TextStyle(
+                    fontSize: Sizes.size16,
+                    color: Colors.white,
+                  ),
+                ),
+                Gaps.v10,
+                SizedBox(
+                  width: 320,
+                  child: ReadMoreText(
+                    hashtags.join(' '),
+                    trimLines: 1,
+                    trimMode: TrimMode.Line,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: Sizes.size16,
+                        fontWeight: FontWeight.bold),
+                    trimCollapsedText: " See more",
+                    trimExpandedText: " See less",
+                    moreStyle: const TextStyle(
+                      fontSize: Sizes.size14,
+                    ),
+                    lessStyle: const TextStyle(
+                      fontSize: Sizes.size14,
+                    ),
+                    colorClickableText: Colors.white,
+                  ),
+                ),
+                Gaps.v10,
+                Row(
+                  children: [
+                    const FaIcon(
+                      FontAwesomeIcons.music,
+                      size: Sizes.size16 + Sizes.size2,
+                      color: Colors.white,
+                    ),
+                    Gaps.h10,
+                    SizedBox(
+                      width: 220,
+                      height: Sizes.size20,
+                      child: Marquee(
+                        text: "Tone Stith - Be Quiet (ft. Kiana Ledé)",
+                        style: const TextStyle(
+                          fontSize: Sizes.size16,
+                          color: Colors.white,
+                        ),
+                        scrollAxis: Axis.horizontal,
+                        velocity: Sizes.size40,
+                        fadingEdgeEndFraction: 0.1,
+                        fadingEdgeStartFraction: 0.1,
+                        showFadingOnlyWhenScrolling: true,
+                        blankSpace: Sizes.size20,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
