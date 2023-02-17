@@ -4,6 +4,8 @@ import 'package:marquee/marquee.dart';
 import 'package:readmore/readmore.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_comments.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -77,22 +79,37 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
-    if (info.visibleFraction == 1 && !_videoPlayerController.value.isPlaying) {
+    if (info.visibleFraction == 1 &&
+        !_isPaused &&
+        !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
   }
 
-  void _togglePause() {
-    if (_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.pause();
-      _animationController.reverse();
-    } else {
-      _videoPlayerController.play();
-      _animationController.forward();
-    }
+  void _onTogglePause() {
     setState(() {
-      _isPaused = !_isPaused;
+      if (_videoPlayerController.value.isPlaying) {
+        _videoPlayerController.pause();
+        _animationController.reverse();
+        _isPaused = true;
+      } else {
+        _videoPlayerController.play();
+        _animationController.forward();
+        _isPaused = false;
+      }
     });
+  }
+
+  void _onCommentsTap() async {
+    if (_videoPlayerController.value.isPlaying) {
+      _onTogglePause();
+    }
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const VideoComments(),
+    );
+    _onTogglePause();
   }
 
   @override
@@ -111,7 +128,7 @@ class _VideoPostState extends State<VideoPost>
           ),
           Positioned.fill(
             child: GestureDetector(
-              onTap: _togglePause,
+              onTap: _onTogglePause,
             ),
           ),
           Positioned.fill(
@@ -201,7 +218,7 @@ class _VideoPostState extends State<VideoPost>
                           color: Colors.white,
                         ),
                         scrollAxis: Axis.horizontal,
-                        velocity: Sizes.size40,
+                        velocity: 40,
                         fadingEdgeEndFraction: 0.1,
                         fadingEdgeStartFraction: 0.1,
                         showFadingOnlyWhenScrolling: true,
@@ -209,6 +226,43 @@ class _VideoPostState extends State<VideoPost>
                       ),
                     ),
                   ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: [
+                const CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                    "https://avatars.githubusercontent.com/u/3612017?s=120&v=4",
+                  ),
+                  child: Text(
+                    "니꼬",
+                  ),
+                ),
+                Gaps.v24,
+                const VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.9M",
+                ),
+                Gaps.v24,
+                GestureDetector(
+                  onTap: _onCommentsTap,
+                  child: const VideoButton(
+                    icon: FontAwesomeIcons.solidComment,
+                    text: "33K",
+                  ),
+                ),
+                Gaps.v24,
+                const VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
                 ),
               ],
             ),
