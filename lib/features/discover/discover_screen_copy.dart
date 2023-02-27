@@ -29,14 +29,6 @@ class _ChallengeDiscoverScreenState extends State<ChallengeDiscoverScreen>
 
   late final TabController _tabController;
 
-  void _onSearchChanged(String value) {
-    print("Searching for $value");
-  }
-
-  void _onSearchSubmitted(String value) {
-    print("Submitted $value");
-  }
-
   void _onTabChanged() {
     if (FocusScope.of(context).hasFocus) {
       FocusScope.of(context).unfocus();
